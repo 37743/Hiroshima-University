@@ -1,0 +1,180 @@
+---
+title: "C240424_5"
+output: pdf_document
+date: "2024-12-22"
+author: "YOUSEF IBRAHIM GOMAA MAHMOUD MABROUK"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(scipen=999)
+```
+
+# Exercise 5-1 
+
+* The link function's purpose in a GLM to connect the expected value of the response variable ($\mu$) to the linear predictors $\alpha + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_p x_p$. It ensures the model handles different types of data properly by transforming $\mu$ to ensure that predictions are meaningful for the type of data being modeled.
+* For binomial models, the identity link $g(\mu)=\mu$ is simple but difficult to work with as it allows predictions for probabilities ($\pi$) outside the valid range [0,1].
+  - As a measure to avoid this, we use the logit link:
+    $g(\pi) = \log\left(\frac{\pi}{1 - \pi}\right), \quad \text{where } 0 \leq \pi \leq 1.$
+    
+# Exercise 5-2
+
+(a) (i)
+    ```{r}
+    HDi.df <- data.frame(Yes = c(24, 35, 21, 30),
+                        No = c(1355, 603, 192, 224),
+                        x = c(0, 2, 4, 6)
+                        )
+    rownames(HDi.df) <- c("Never", "Occasional",
+                        "Nearly every night", "Every night"
+                        )
+    HDi.df
+    ```
+    \newpage
+    ```{r}
+    glm(cbind(Yes, No) ~ x,
+        family = binomial(link = "logit"),
+        data = HDi.df
+        )
+    ```
+
+    (ii)
+    ```{r}
+    HDii.df <- data.frame(Yes = c(24, 35, 21, 30),
+                        No = c(1355, 603, 192, 224),
+                        x = c(0, 1, 2, 3)
+                        )
+    rownames(HDii.df) <- c("Never", "Occasional",
+                        "Nearly every night", "Every night"
+                        )
+    HDii.df
+    ```
+    
+    ```{r}
+    glm(cbind(Yes, No) ~ x,
+        family = binomial(link = "logit"),
+        data = HDii.df
+        )
+    ```
+
+    \newpage
+    (iii)
+    ```{r}
+    HDiii.df <- data.frame(Yes = c(24, 35, 21, 30),
+                        No = c(1355, 603, 192, 224),
+                        x = c(1, 2, 3, 4)
+                        )
+    rownames(HDiii.df) <- c("Never", "Occasional",
+                        "Nearly every night", "Every night"
+                        )
+    HDiii.df
+    ```
+    
+    ```{r}
+    glm(cbind(Yes, No) ~ x,
+        family = binomial(link = "logit"),
+        data = HDiii.df
+        )
+    ```
+    
+    * Based on the results, the coefficient of x ($\beta$) is inversly proportional to the scale of the scores. However, shifting the scores had little to no effect on it, but instead adjusted the intercept.
+
+(b) 
+    ```{r}
+    HD_new <- data.frame(Yes = c(24, 35, 21, 30),
+                         No = c(1355, 603, 192, 224),
+                         x_new = c(0, 2, 6, 7))
+    
+    HD_text <- data.frame(Yes = c(24, 35, 21, 30),
+                          No = c(1355, 603, 192, 224),
+                          x_text = c(0, 2, 4, 5))
+    ```
+
+    ```{r}
+    fit_new <- glm(cbind(Yes, No) ~ x_new,
+                       family = binomial(link = "logit"),
+                       data = HD_new)
+    ```
+    
+    ```{r}
+    fit_text <- glm(cbind(Yes, No) ~ x_text,
+                        family = binomial(link = "logit"),
+                        data = HD_text)
+    ```
+    
+    ```{r}
+    HD_new$fitted_new <- predict(fit_new, type = "response")
+      HD_text$fitted_text <- predict(fit_text, type = "response")
+      
+      plot(HD_new$x_new, HD_new$fitted_new,
+           type = "b", col = "blue", pch = 16, ylim = c(0, 0.15),
+           xlab = "Snoring Scores", ylab = "pi", 
+           main = "Comparison of Logistic Regression")
+      lines(HD_text$x_text, HD_text$fitted_text,
+            type = "b", col = "orange", pch = 17)
+      legend("topleft",
+             legend = c("Scores: (0, 2, 6, 7)", "Scores: (0, 2, 4, 5)"), 
+             col = c("blue", "orange"), pch = c(16, 17), lty = 1)
+    ```
+    
+    * Yes, it is slightly sensitive. As the change in the score slightly affected $\alpha$, $\beta$ and $\pi$.
+
+# Exercise 5-3
+
+(a) 
+    $\because x_{A} = 0, x_{B} = 1, log\mu=\alpha+\beta x$\
+    $\therefore log\mu_{A}=\alpha + \beta * (0) = \alpha$\
+    & $log\mu_{B}=\alpha + \beta * (1) = \alpha+\beta$\
+    $\therefore log\mu_{B}-log\mu_{A}=\alpha+\beta-\alpha=\beta$
+    $= log(\frac{\mu_{B}}{\mu_{A}}) \text{, raising to exponent for R.H.S and L.H.S}$\
+    $\therefore e^\beta = e^{log(\frac{\mu_{B}}{\mu_{A}}) } = \frac{\mu_{B}}{\mu_{A}}$
+    
+(b)
+    ```{r}
+    treat.df <- data.frame(
+                    treatment <- c(rep(0, 10), rep(1, 10)),
+                    imperfections <- c(8, 7, 6, 6, 3, 4, 7, 2, 3, 4, 9, 9, 8, 14, 8, 13, 11, 5, 7, 6)
+                    )
+    treat.fit <- glm(imperfections ~ treatment,
+                    family = poisson(link = "log"),
+                    data = treat.df
+                    )
+    summary(treat.fit)
+    ```
+
+(c)
+    $z_{w} = \frac{\hat{\beta_{treatment}}}{SE(\hat{\beta_{treatment})}} = \frac{0.06355}{0.04971}$ = `r 0.5878/0.1764`\
+    $\because p<.05,\text{ at significance level }\alpha = .05, \text{we reject the null hypothesis that }\beta_{treatment}=0$\
+    This means there is a statistically significant difference in the imperfections between treatment A and treatment B.
+    ```{r}
+    confint.default(treat.fit)
+    ```
+
+#Exercise 5-4
+
+(a)
+    ```{r}
+    intercept.fit <- glm(imperfections ~ 1,
+                        family = poisson(link = "log"),
+                        data = treat.df
+                        )
+    logLik(intercept.fit)
+    ```
+
+(b)
+    ```{r}
+    logLik(treat.fit)
+    deviance <- 2 * (logLik(treat.fit)[1] - logLik(intercept.fit)[1])
+    deviance
+    ```
+    $D_{0} - D_{1} = 2(L_{1}-L_{0})=2[-45.17455-(-50.96924)]$=`r 2*(-45.17455-(-50.96924))`$~\chi^2(2-1)=\chi^2(1)$
+    
+    ```{r}
+    p_value <- pchisq(deviance, df = 1, lower.tail = FALSE)
+    p_value
+    ```
+    ```{r}
+    drop1(treat.fit, test = "LRT")
+    ```
+  $\because p-value < (\alpha = .05), \text{we reject the null hypothesis that } \beta_{treatment} = 0.$
+

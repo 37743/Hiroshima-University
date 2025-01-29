@@ -1,0 +1,11 @@
+mpg  cylinders  displacement  horsepower weight acceleration model_year  origin car_name
+26.0   4   97.00      46.00      1950.      21.0   73  2	"volkswagen super beetle"
+11.0   8   400.0      150.0      4997.      14.0   73  1	"chevrolet impala"
+12.0   8   400.0      167.0      4906.      12.5   73  1	"ford country"
+13.0   8   360.0      170.0      4654.      13.0   73  1	"plymouth custom suburb"
+12.0   8   350.0      180.0      4499.      12.5   73  1	"oldsmobile vista cruiser"
+18.0   6   232.0      100.0      2789.      15.0   73  1	"amc gremlin"
+20.0   4   97.00      88.00      2279.      19.0   73  3	"toyota carina"
+21.0   4   140.0      72.00      2401.      19.5   73  1	"chevrolet vega"
+22.0   4   108.0      94.00      2379.      16.5   73  3	"datsun 610"
+18.0   3   70.00      90.00      2124.      13.5   73  3	"mazda rx3"

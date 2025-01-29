@@ -1,0 +1,16 @@
+"0","    intercept.fit <- glm(imperfections ~ 1,
+                        family = poisson(link = ""log""),
+                        data = treat.df
+                        )
+    logLik(intercept.fit)
+"
+"1","'log Lik.' "
+"1",""
+"1","-50.96924"
+"1",""
+"1"," (df="
+"1",""
+"1","1"
+"1",""
+"1",")
+"

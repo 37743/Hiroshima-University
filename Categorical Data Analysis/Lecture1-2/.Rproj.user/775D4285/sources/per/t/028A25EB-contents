@@ -1,0 +1,13 @@
+---
+title: "C240424_3"
+output: pdf_document
+date: "2024-12-12"
+author: "YOUSEF IBRAHIM GOMAA MAHMOUD MABROUK"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Exercise 3-1
+

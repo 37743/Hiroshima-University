@@ -1,0 +1,78 @@
+---
+title: "C240424_2"
+output: pdf_document
+date: "2024-12-07"
+author: "YOUSEF IBRAHIM GOMAA MAHMOUD MABROUK"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+---
+
+# Exercise 2-1
+
+1.
+
+  a. Y (Response/Dependent): Attitude Toward Gun Control\
+     X (Explanatory/Independent): Gender, Mother's Education\
+  b. Y (Response/Dependent): Heart Disease\
+     X (Explanatory/Independent): Blood Pressure, Cholesterol\
+  c. Y (Response/Dependent): Vote for President\
+     X (Explanatory/Independent): Race, Religion, Annual Income\
+2.
+  a. Nominal
+  b. Ordinal
+  c. Ordinal
+  d. Nominal
+  e. Nominal
+  f. Ordinal
+\
+
+# Exercise 2-2
+
+
+a.    $\because n\ =\ 100,\ \pi\ =\ \frac{1}{4},\ y\ =\ correct\ answer.$\
+$\therefore Y \sim {\sf binomial}(n=100,\ \pi=0.25)$\
+Probability Mass Function = $P(Y=y)$ = $\frac{100!}{y!(100-y)!}(0.25)^{y}(1-0.25)^{100-y}$
+b.  Mean = $E(Y)$ = $100*0.25$ = `r 100*0.25`\
+    Standard Deviation = $\sigma(Y)$ = $\sqrt{100*0.25*(1-0.25)}$ = `r sqrt(100*0.25*(1-0.25))`\
+
+It is improbable for a student to randomly get at least 50 correct answers, as this outcome lies beyond the typical range of the binomial distribution centered around the mean of 25 with a standard deviation of 4.33, as shown in the graph below.(In the next page)
+
+\newpage
+
+## Binomial Probability Distribution
+```{r}
+plot(x = 0:100, y = dbinom(0:100, 100, .25),
+     main = "Binomial Probability Distribution", type = "h",
+     xlab = "y", ylab = "P(y)", las = 1, xaxt = "n")
+
+axis(side = 1, at = 0:100)
+```
+
+# Exercise 2-3
+
+
+a. $\because n\ =\ 2,\ \pi\ =\ 0.5,\ y\ =\ support\ increase.$\
+$\therefore Y \sim {\sf binomial}(n=2,\ \pi=0.5)$\
+Probability Mass Function = $P(Y=y)$ = $\frac{2!}{y!(2-y)!}(0.5)^{y}(1-0.5)^{2-y}$\
+Mean = $E(Y)$ = $2*0.5$ = `r 2*0.5`\
+Standard Deviation = $\sigma(Y)$ = $\sqrt{2*0.5*(1-0.5)}$ = `r sqrt(2*0.5*(1-0.5))`\
+b. $P(y=1)\ =\ l(\pi|y)\ =\ \frac{2!}{1!(2-1)!}(\pi)^{1}(1-\pi)^{2-1}$ = $2(\pi)(1-\pi)$\
+ML Estimate = $\hat{\pi}$ = $\frac{y}{n}$ = $\frac{1}{2}$ = `r 1/2`\
+That is because $\frac{d}{d\pi}log\ l(\pi|y)$ = 0 yields $\pi\ =\ \frac{y}{n}$, which is the only candidate for Maximum Likelihood Estimation. In addition, its second derivative yields values less than 0 for $\pi \in [0,1]$.
+
+The likelihood function sketched:
+```{r}
+pi <- seq(0, 1, by = 0.01)
+likelihood <- 2 * pi * (1 - pi)
+plot(x = pi, y = likelihood, main = "Likelihood Function",
+     type = "h", xlab = "y", ylab = "P(y)",
+     las = 1, xaxt = "n")
+
+axis(side = 1, at = seq(0, 1, by = 0.01))
+```
+
+The English lecture 2 video has stopped until this point for the assignment report.

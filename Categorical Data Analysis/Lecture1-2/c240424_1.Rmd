@@ -1,0 +1,57 @@
+---
+title: "C240424_1"
+output: pdf_document
+date: "2024-12-05"
+author: "YOUSEF IBRAHIM GOMAA MAHMOUD MABROUK"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<!-- ## Problem 1-1 -->
+## Problem 1-1:
+
+<!-- Printing the PDF is the answer. -->
+
+<!-- ## Problem 1-2 -->
+## Problem 1-2:
+
+*Yousef Ibrahim Gomaa Mahmoud Mabrouk*
+
+**Yousef Ibrahim Gomaa Mahmoud Mabrouk**
+
+<https://37743.github.io>
+
+# Categorical Data Analysis
+
+## RMarkdown
+
+The sum of 2 and 3 is: `r 2+3`
+
+* arbitrary list
+  + bullet point 1
+  + bullet point 2
+  + bullet point 3
+  
+<!-- ## Problem 1-3 -->
+## Problem 1-3:
+
+```{r}
+data("iris")
+head(iris)
+mean_sepal <- mean(iris$Sepal.Length)
+mean_petal <- mean(iris$Petal.Length)
+mean_sepal
+mean_petal
+var_sepal <- var(iris$Sepal.Length)
+var_petal <- var(iris$Petal.Length)
+var_sepal
+var_petal
+x <- iris$Sepal.Length
+y <- iris$Petal.Length
+cor(x, y)
+plot(x,y)
+```
+
+According to the graph illustrated above, and the output value of correlation (`r cor(x, y)`), the Sepal Length (x) and Petal Length (y) features are positively correlated. (Directly Proportional)

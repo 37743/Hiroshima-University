@@ -1,0 +1,81 @@
+---
+title: "C240424_7"
+output: pdf_document
+date: "2025-01-05"
+author: "YOUSEF IBRAHIM GOMAA MAHMOUD MABROUK"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(scipen=999)
+```
+
+# Exercise 7-1 
+
+```{r}
+  LI <- c(8, 8, 10, 10, rep(c(12, 14, 16), each = 3),
+          18, 20, 20, 20, 22, 22, 24, 26, 28, 32, 34, rep(38, 3))
+  y <- c(rep(0, 13), 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0)
+  cancer.fit <- glm(y ~ LI, family=binomial)
+  summary(cancer.fit)
+  confint(cancer.fit)
+```
+    
+a. $\because P(Y=1) = \pi = \frac{e^{\alpha+\beta x}}{1+e^{\alpha+\beta x}}, \alpha \approx -3.78, \beta \approx 0.145$\
+$\therefore \hat{P}(Y=1)= \frac{e^{-3.78+0.145*26}}{1+e^{-3.78+0.145*26}} \approx 0.4975 \approx 0.5$\
+
+    ```{r}
+      LI_test <- 26
+      intercept <- coef(cancer.fit)[1]
+      beta <- coef(cancer.fit)[2]
+      P_Y1 <- exp(intercept + beta * LI_test) / (1 + exp(intercept + beta * LI_test))
+      P_Y1
+    ```
+
+b. $\because \frac{\pi}{1-\pi}=e^{\alpha + \beta x}$\
+$\therefore e^{\beta} = e^{0.145} = 0.1156 \approx 0.116$\
+$\text{The odds of a success are multiplied by } e^{\beta} (\approx 0.116 )\text{ when LI is increased by 1}$\
+
+c. The log-odds of remission are added by `r round(beta, 3)` per 1 unit increase of LI.
+
+d. $\because \text{Rate of Change = }\beta \hat{\pi}(x)[1-\hat{\pi}(x)]$\
+$\hat{\pi}(18)=\frac{e^{-3.78+0.145*18}}{1+e^{-3.78+0.145*18}}=0.2369268$\
+$\therefore 0.145*0.247(1-0.247) \approx 0.026$\
+
+    ```{r}
+      LI_test2 <- 18
+      P2_Y1 <- exp(intercept + beta * LI_test2) / (1 + exp(intercept + beta * LI_test2))
+      P2_Y1
+      dP <- beta * P2_Y1 * (1 - P2_Y1)
+      round(dP, 3)
+    ```
+
+# Exercise 7-2
+
+a. Wald test for Hypothesis: $\beta = 0:$\
+$z_{W} = \frac{\hat{\beta}_{width}}{SE(\hat{\beta}_{width})}=0.145/0.06=2.4167$\
+Since p value < .05, assuming default significance level of $\alpha$ = .05, we reject the null hypothesis.
+
+b. Wald 95% CI for odds ratio ~ $e^\beta$:\
+    ```{r}
+        exp(confint.default(cancer.fit))
+    ```
+    Which means that for every 1% increase in LI, the odds of remission increase by a factor between about approximately 1.03 and 1.3.
+
+\newpage
+
+c. Likelihood-ratio test for Hypothesis: $\beta = 0:$
+    ```{r}
+      drop1(cancer.fit, test = "LRT")
+    ```
+    $\chi^2(1) = 8.2988$, at significance level $\alpha = .05$, we reject the null hypothesis as p-value $\approx$ .004 < .05.
+  
+d. Likelihood-ratio CI for $e^\beta$:
+    ```{r}
+        exp(confint(cancer.fit))
+    ```
+    Which means that for every 1% increase in LI, the odds of remission increase by a factor between about approximately 1.04 and 1.33.
+    
+# Exercise 7-3
+
+To be solved in/after lecture 9.

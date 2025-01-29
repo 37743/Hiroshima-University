@@ -1,0 +1,84 @@
+"0","    treat.df <- data.frame(
+                    treatment <- c(rep(0, 10), rep(1, 10)),
+                    imperfections <- c(8, 7, 6, 6, 3, 4, 7, 2, 3, 4, 9, 9, 8, 14, 8, 13, 11, 5, 7, 6)
+                    )
+    treat.fit <- glm(imperfections ~ treatment,
+                    family = poisson(link = ""log""),
+                    data = treat.df
+                    )
+    summary(treat.fit)
+"
+"1","
+Call:
+"
+"1",""
+"1","glm(formula = imperfections ~ treatment, family = poisson(link = ""log""), 
+    data = treat.df)"
+"1",""
+"1","
+"
+"1","
+Coefficients:
+"
+"1","           "
+"1"," Estimate"
+"1"," Std. Error"
+"1"," z value"
+"1","             Pr(>|z|)"
+"1","    "
+"1","
+(Intercept)"
+"1","   1.6094"
+"1","     0.1414"
+"1","  11.380"
+"1"," < 0.0000000000000002"
+"1"," ***"
+"1","
+treatment  "
+"1","   0.5878"
+"1","     0.1764"
+"1","   3.332"
+"1","             0.000861"
+"1"," ***"
+"1","
+"
+"1","---
+Signif. codes:  "
+"1",""
+"1","0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1"
+"1","
+"
+"1","
+(Dispersion parameter for "
+"1",""
+"1","poisson"
+"1",""
+"1"," family taken to be "
+"1",""
+"1","1"
+"1",""
+"1",")
+
+"
+"1",""
+"1","    Null deviance: 27.857  on 19  degrees of freedom
+"
+"1",""
+"1","Residual deviance: 16.268  on 18  degrees of freedom
+"
+"1","AIC: "
+"1",""
+"1","94.349"
+"1",""
+"1","
+
+"
+"1",""
+"1","Number of Fisher Scoring iterations: "
+"1",""
+"1","4"
+"1",""
+"1","
+"
+"1","
+"

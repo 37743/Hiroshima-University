@@ -1,0 +1,5 @@
+ベクトルや行列を用いた微分についての参考文献
+Reference for differentiation using vectors and matrices
+
+The Matrix Cookbook
+https://www2.imm.dtu.dk/pubdb/edoc/imm3274.pdf

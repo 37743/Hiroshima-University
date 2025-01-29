@@ -1,0 +1,99 @@
+---
+title: "C240424_9"
+output: pdf_document
+date: "2025-01-11"
+author: "YOUSEF IBRAHIM GOMAA MAHMOUD MABROUK"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Exercise 7-3
+
+a.
+    ```{r}
+     MBTI <- read.table("MBTI_Ex7_3.dat", header=TRUE)
+    ```
+b.
+    ```{r}
+    M1.fit <- glm(y ~ factor(EI) + factor(SN) + factor(TF) + factor(JP),
+                        family = binomial(link="logit"),
+                        data = MBTI)
+    summary(M1.fit)
+    ```
+    * Used factor(x) for every categorical variable x in order to fit the model. As such, the indicators carry values of 0 or 1, where 1 denotes the latter value of character in alphabetical order by default. Since each variable consists of 2 levels, there exists 1 indicator for each variable.\
+        (e.g. The indicator EI is "i" at EI=1 and EI is "e" at EI=0, while SN is "s" at SN=1 and SN is "n" at SN=0... and so on)
+    
+    * The estimated prediction equation is as follows:\
+        $\hat{\pi} = \hat{P}(Y=1) = -2.114 - 0.5550EI - 0.4292SN + 0.6873TF + 0.2022JP$
+        - Which means that the log odds of success are subtracted by 0.555 per 1 unit increase of EI, subtracted by 0.4292 per 1 unit increase of SN, added by 0.6873 unit increase of TF and 0.2022 by per unit increase of JP.
+        - In this case, since all variables are categorical and binary. The indicator values can only be either 0 or 1.
+
+c. 
+    ```{r}
+    predicted_probability <- predict(M1.fit,
+                                     newdata = data.frame(EI = "e",
+                                                          SN = "s",
+                                                          TF = "t",
+                                                          JP = "j"),
+                                     type = "response")
+    predicted_probability
+    ```
+    * $\hat{\pi} = \hat{P}(Y=1|EI=e,SN=n,TF=T,JP=J)$=`r predicted_probability`
+
+d. The personality type, Extroversion, Intuitive, Thinking and Perceiving (ENTP), has the highest predicted probability as Extroversion and Intuitive remove the effect of the negative indicators EI and SN when substituted in the estimated prediction equation as they are both reference values. On the other hand, Thinking and Perceiving coefficients increase the log-odds, which in turn maximizes the predicted probability of Y=1 (Drinking alcohol frequently).
+
+
+e.
+    $\because$ The log odds of success (Y=1) increase by 0.6873 per 1 unit increase of TF.\
+    $\therefore$ The odds of success (Y=1) are multiplied by `r exp(0.6873)` per 1 unit increase of TF.
+
+f.
+    ```{r}
+    M2.fit <- glm(y ~ factor(EI) + factor(SN),
+                        family = binomial(link="logit"),
+                        data = MBTI)
+    summary(M2.fit)
+    anova(M2.fit, M1.fit, test = "LRT")
+    ```
+    * $\chi^2(1) = 9.89, p = .007:$
+    * Since the p-value is less than .05, we conclude that including the factors TF and JP significantly improve the model fit. Based on significance alone, M1 is preferred.
+
+g.
+    ```{r}
+    M3.fit <- glm(y ~ factor(EI) + factor(SN) + factor(EI):factor(SN),
+                        family = binomial(link="logit"),
+                        data = MBTI)
+    summary(M3.fit)
+    anova(M2.fit, M3.fit, test = "LRT")
+    ```
+    * $\chi^2(1) = 0.582, p = .45:$
+    * Since the p-value is higher than .05, we are better off not including the interaction effect. Based on significance alone, M2 is preferred.
+
+# Exercise 10
+
+1. AIC for Models M1 and M2:
+    ```{r}
+    AIC(M1.fit)
+    AIC(M2.fit)
+    # another method:
+    loglikm1 <- logLik(M1.fit)
+    -2*loglikm1+2*attr(loglikm1, "df")
+    loglikm2 <- logLik(M2.fit)
+    -2*loglikm2+2*attr(loglikm2, "df")
+    ```
+2. Comparison
+    ```{r}
+    AIC(M1.fit, M2.fit)
+    ```
+    * M1 has lesser AIC value, therefore it is the better/more preferable model to use.
+    
+3.
+    ```{r}
+    library(MASS)
+    stepAIC(M1.fit, direction="backward")
+    ```
+    * Using backward elimination, the factors that should be selected in the final model are: SN, EI and TF. As the AIC value has reached a minimum of 636.3 using said factors. That is assuming no interactions are made.
+    * The resultant estimated prediction equation is:\
+    $\hat{\pi}=-1.9678-0.5518EI-0.4843SN+0.6601TF$
